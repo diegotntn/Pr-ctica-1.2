@@ -1,6 +1,14 @@
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
 function booleanoaleatorio(){
     return Math.random() < 0.5; // Umbral de 0.5 para equilibrar las probabilidades entre true y false
 }
+
 function infiltracionDeAnnalyn(secuestradores, perroPresente, prisioneroDespierto) {
     let accionesDisponibles = [];
 
@@ -32,10 +40,10 @@ let caballeroDurmiendo = booleanoaleatorio();
 let arqueroDurmiendo = booleanoaleatorio();
 
 let secuestradores = [];
-if (caballeroDurmiendo) {
+if (!caballeroDurmiendo) {
     secuestradores.push("caballero");
 }
-if (arqueroDurmiendo) {
+if (!arqueroDurmiendo) {
     secuestradores.push("arquero");
 }
 
@@ -50,4 +58,19 @@ console.log("Perro presente:", perroPresente);
 console.log("Prisionero despierto:", prisioneroDespierto);
 
 let acciones = infiltracionDeAnnalyn(secuestradores, perroPresente, prisioneroDespierto);
-console.log("Acciones disponibles para Annalyn:", acciones);
+
+console.log("Acciones disponibles para Annalyn:");
+acciones.forEach((accion, index) => {
+    console.log(`${index + 1}. ${accion}`);
+});
+
+rl.question('Selecciona el número de la acción que deseas realizar: ', (answer) => {
+  if (parseInt(answer) > 0 && parseInt(answer) <= acciones.length) {
+    console.log(`Has seleccionado: ${acciones[parseInt(answer) - 1]}`);
+  } else {
+    console.log('Selección no válida.');
+  }
+  rl.close();
+});
+
+
