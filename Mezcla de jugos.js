@@ -20,7 +20,7 @@ function limasACortar(cantidadNecesaria, suministroLimas) {
     let limasARecortar = 0;
     let indiceLima = 0;
     
-    while (cantidadNecesaria > 0 && indiceLima < suministroLimas.length) {
+    do {
         const lima = suministroLimas[indiceLima];
         let gajosDeLima;
         
@@ -42,7 +42,7 @@ function limasACortar(cantidadNecesaria, suministroLimas) {
         limasARecortar++;
         cantidadNecesaria -= gajosDeLima;
         indiceLima++;
-    }
+    } while (cantidadNecesaria > 0 && indiceLima < suministroLimas.length);
     
     return limasARecortar;
 }
@@ -51,8 +51,9 @@ function limasACortar(cantidadNecesaria, suministroLimas) {
 function pedidosRestantes(minutosRestantes, pedidos) {
     let restantes = [];
     let tiempoRestante = minutosRestantes;
-    
-    for (let i = 0; i < pedidos.length; i++) {
+    let i = 0;
+
+    do {
         const jugo = pedidos[i];
         const tiempoParaMezclar = tiempoParaMezclarJugo(jugo);
         
@@ -62,15 +63,21 @@ function pedidosRestantes(minutosRestantes, pedidos) {
             restantes = pedidos.slice(i);
             break;
         }
-    }
+        i++;
+    } while (i < pedidos.length);
     
-    return restantes;
+    if (restantes.length === 0) {
+        return `Pedidos restantes al final del turno: (0) []`;
+    } else {
+        return restantes;
+    }
 }
 
 // Ejemplo de uso
 const pedidosDeJugos = ['Puro Placer de Fresa', 'Jardín Verde', 'Energizante', 'Isla Tropical'];
 const limasDisponibles = ['pequeña', 'mediana', 'grande', 'mediana', 'mediana'];
+const tiempoRestanteEnTurno = 120; 
 
 console.log("Tiempo necesario para mezclar 'Jardín Verde':", tiempoParaMezclarJugo('Jardín Verde'), "minutos");
-console.log("Cantidad de limas a cortar:", limasACortar(30, limasDisponibles), "limas");
-console.log("Pedidos restantes al final del turno:", pedidosRestantes(180, pedidosDeJugos));
+console.log("Cantidad de limas a cortar:", limasACortar(24, limasDisponibles), "limas");
+console.log("Pedidos restantes al final del turno:", pedidosRestantes(tiempoRestanteEnTurno, pedidosDeJugos));
